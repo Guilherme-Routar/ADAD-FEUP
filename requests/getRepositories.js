@@ -27,7 +27,7 @@ var searchPath = '/search/repositories?q=size:',
 var options = [];
 var arr = [];
 for (var interval = 1; interval <= 2; interval++) {
-  for (var nPage = 1; nPage <= 2; nPage++) {
+  for (var nPage = 1; nPage <= 10; nPage++) {
     options = {
       host: 'api.github.com',
       path: searchPath + (minSize + 200*(interval-1)) + '..' + (maxSize + 200*(interval-1)) + pagePath + nPage,
@@ -43,4 +43,5 @@ for (var interval = 1; interval <= 2; interval++) {
       console.log('arr = ' + arr.length);
     });
   }
+  sleep.sleep(60); //API traffic timeout
 }
