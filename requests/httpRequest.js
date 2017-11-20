@@ -9,7 +9,7 @@ module.exports.httpResponse = function (options, callback) {
 
     var str = '';
     var request = https.request(options, function (response) {
-
+        console.log('options = ' + options.path);
         response.on('data', function (body) {
             str += body;
         });
