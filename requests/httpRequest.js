@@ -15,7 +15,6 @@ module.exports.httpResponse = function (options, callback) {
             str += body;
         });
         response.on('end', function () {
-            //sleep.sleep(6); //API traffic timeout
             return callback(str);
         });
     });
