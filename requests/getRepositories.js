@@ -10,6 +10,7 @@
 
 var httpRequest = require('./httpRequest.js');
 var file = require('../file.js');
+var csv = require("csv");
 
 /**
  * HTTP request options 
@@ -79,4 +80,60 @@ function loadRepositories(interval, pageNumber) {
 }
 
 var initialInterval = 1, initialPageNumber = 1;
-loadRepositories(initialInterval, initialPageNumber);
+//loadRepositories(initialInterval, initialPageNumber);
+
+
+
+
+
+/**
+ * Editing CSV
+ */
+
+ /*
+var readStream = file.createReadStream("/tmp/test"); // readStream is a read-only stream wit raw text content of the CSV file
+var writeStream = file.createWriteStream("/tmp/testAfter"); // writeStream is a write-only stream to write on the disk
+
+var csvStream = csv.parse(); // csv Stream is a read and write stream : it reads raw text in CSV and output untransformed records
+
+csvStream.on("data", function(data) {
+  console.log(data[6]);
+  console.log(data[11]);
+  console.log(data[12]);
+  console.log(data[13]);
+  console.log(data[14]);
+  console.log(data[15]);
+  console.log(data[16]);
+
+  data[6] = 'edited';
+  data[16] = 'edited2\n';
+
+  // Request
+  var options = {
+    host: 'api.github.com',
+    path: '/Guilherme-Routar/SDIS-FEUP/languages',
+    method: 'GET',
+    headers: { 'user-agent': userAgent }
+  }
+  var temp = [];
+  httpRequest.httpResponse(options, function (response) {
+    var items = JSON.parse(response);
+    console.log('lang length = ' + items.HTML);
+    temp.push(items);
+    //data[6] = items.length;
+  });
+  console.log('temp lengh = ' + temp.length);
+  // End request
+
+
+  writeStream.write(JSON.stringify(data));
+})
+.on("end", function(){
+    console.log("done");
+})
+.on("error", function(error){
+    console.log(error);
+});
+
+readStream.pipe(csvStream);
+*/
