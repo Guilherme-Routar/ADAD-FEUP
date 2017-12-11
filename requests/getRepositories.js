@@ -80,6 +80,7 @@ function loadRepositories(interval, pageNumber) {
 }
 
 var initialInterval = 1, initialPageNumber = 1;
+console.log("This is it");
 //loadRepositories(initialInterval, initialPageNumber);
 
 
