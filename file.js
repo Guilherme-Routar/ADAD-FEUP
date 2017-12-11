@@ -17,36 +17,13 @@ var fields = [
     'n_pulls',
     'n_contributors',
     'n_collaborators',
-    'n_commits'
+    'n_commits',
+    'n_releases', 
+    'n_labels', 
+    'n_deployments' 
 ];
 
-fs.writeFile("/tmp/test", fields, function(err) {
-    if(err) {
-        return console.log(err);
-    }
-}); 
-
-var fields2 = [
-    '0',
-    '1',
-    '2',
-    '3',
-    '4',
-    '5',
-    'n_languages',
-    '7',
-    '8',
-    '9',
-    '10',
-    'n_subscribers',
-    'n_downloads',
-    'n_pulls',
-    'n_contributors',
-    'n_collaborators',
-    'n_commits'
-];
-
-fs.appendFile("/tmp/test", '\n' + fields2, function(err) {
+fs.writeFile("/home/routar/Desktop/ADAD/ADAD-FEUP/dataset.csv", fields, function(err) {
     if(err) {
         return console.log(err);
     }

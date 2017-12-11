@@ -11,6 +11,18 @@ var host = 'https://api.github.com',
     pageNumber = 1;
 var fullPath = '';
 
+var labelsArr = [
+    'languages', 
+    'subscribers', 
+    'pulls', 
+    'contributors', 
+    'commits', 
+    'contributors', 
+    'labels', 
+    'deployments'
+];
+var valuesArr = [];
+
 // 30 repositories per loop
 for (var i = 0; i < 1; i++) {
 
@@ -21,7 +33,6 @@ for (var i = 0; i < 1; i++) {
     }
 
     fullPath = host + searchPath + minSize + '..' + maxSize + pagePath + pageNumber;
-    //console.log('fullPath = ' + fullPath);
     var res = request('GET', fullPath, {
         'headers': {
             'user-agent': userAgent
@@ -31,6 +42,23 @@ for (var i = 0; i < 1; i++) {
     var results = (JSON.parse(res.getBody())).items;
     for (var j = 0; j < results.length; j++) {
         var value = results[j];
+
+        var subPath = host + '/repos/' + value.full_name + '/';
+
+        for (var k = 0; k < labelsArr.length; k++) {
+            var res2 = request('GET', subPath + labelsArr[k], {
+                'headers': {
+                    'user-agent': userAgent
+                }
+            });
+            var subresults =  (JSON.parse(res2.getBody()));
+            if (k == 0)
+                valuesArr.push(Object.keys(subResults.length)); //Not tested yet for languages json length
+            else 
+                valuesArr.push(subresults);
+            console.log(subresults);
+        }
+
         var data = [
             value.id,
             value.name,
@@ -38,17 +66,21 @@ for (var i = 0; i < 1; i++) {
             value.size,
             value.created_at,
             value.language,
-            'n_langs',
+            valuesArr[0], //repos/user/reposName/languages
             value.open_issues,
             value.stargazers_count,
             value.watchers,
             value.forks,
-            'n_subscribers',
-            'n_downloads',
-            'n_pulls',
-            'n_contrib',
-            'n_collab',
-            'n_commits'
+            valuesArr[1], //repos/user/reposName/subscribers
+            'DOWNLOADS', //DEPRECATED--
+            valuesArr[2], //repos/user/reposName/pulls
+            valuesArr[3], //repos/user/reposName/contributors
+            'COLLABS', //REQUIRES AUTH--
+            valuesArr[4], //repos/user/reposName/commits
+            //Added
+            valuesArr[5], //repos/user/reposName/contributors
+            valuesArr[6], //repos/user/reposName/labels
+            valuesArr[7] //repos/user/reposName/deployments
           ];
         file.appendFile("/home/routar/Desktop/ADAD/ADAD-FEUP/dataset.csv", '\n' + data, function(err) {
             if(err) {
