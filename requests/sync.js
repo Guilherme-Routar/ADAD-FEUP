@@ -11,7 +11,7 @@ var host = 'https://api.github.com',
     pageNumber = 1;
 var fullPath = '';
 
-// 30 results per loop, so 1000*30 = 30k results
+// 30 repositories per loop
 for (var i = 0; i < 1; i++) {
 
     if (pageNumber == 11) {
@@ -28,8 +28,34 @@ for (var i = 0; i < 1; i++) {
         }
     });
 
-    //we have 30 results here
-    console.log((JSON.parse(res.getBody())).items);
+    var results = (JSON.parse(res.getBody())).items;
+    for (var j = 0; j < results.length; j++) {
+        var value = results[j];
+        var data = [
+            value.id,
+            value.name,
+            value.full_name,
+            value.size,
+            value.created_at,
+            value.language,
+            'n_langs',
+            value.open_issues,
+            value.stargazers_count,
+            value.watchers,
+            value.forks,
+            'n_subscribers',
+            'n_downloads',
+            'n_pulls',
+            'n_contrib',
+            'n_collab',
+            'n_commits'
+          ];
+        file.appendFile("/home/routar/Desktop/ADAD/ADAD-FEUP/dataset.csv", '\n' + data, function(err) {
+            if(err) {
+                return console.log(err);
+            }
+        }); 
+    }
 
     pageNumber++;
 }
