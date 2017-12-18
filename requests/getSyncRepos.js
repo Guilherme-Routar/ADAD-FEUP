@@ -1,5 +1,6 @@
+var sleep = require('sleep');
 var request = require('sync-request');
-var file = require('../file.js');
+var file = require('./file.js');
 
 var userAgent = 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:57.0) Gecko/20100101 Firefox/57.0';
 
@@ -33,6 +34,7 @@ for (var i = 0; i < 1; i++) {
     }
 
     fullPath = host + searchPath + minSize + '..' + maxSize + pagePath + pageNumber;
+    console.log('search path = ' + fullPath);
     var res = request('GET', fullPath, {
         'headers': {
             'user-agent': userAgent
@@ -43,21 +45,21 @@ for (var i = 0; i < 1; i++) {
     for (var j = 0; j < results.length; j++) {
         var value = results[j];
 
+        
         var subPath = host + '/repos/' + value.full_name + '/';
-
-        for (var k = 0; k < labelsArr.length; k++) {
-            var res2 = request('GET', subPath + labelsArr[k], {
+        for (var label = 0; label < labelsArr.length; label++) {
+            //console.log('sub path = ' + subPath + labelsArr[label]);
+            sleep.sleep(8);
+            var subRes = request('GET', subPath + labelsArr[label], {
                 'headers': {
                     'user-agent': userAgent
                 }
             });
-            var subresults =  (JSON.parse(res2.getBody()));
-            if (k == 0)
-                valuesArr.push(Object.keys(subResults.length)); //Not tested yet for languages json length
-            else 
-                valuesArr.push(subresults);
-            console.log(subresults);
+            var subresults =  (JSON.parse(subRes.getBody()));
+            if (label == 0) valuesArr.push(Object.keys(subRes).length); //getting number of languages
+            else valuesArr.push(subresults);
         }
+        
 
         var data = [
             value.id,
@@ -66,27 +68,27 @@ for (var i = 0; i < 1; i++) {
             value.size,
             value.created_at,
             value.language,
-            valuesArr[0], //repos/user/reposName/languages
+            'lang', //repos/user/reposName/languages
             value.open_issues,
             value.stargazers_count,
             value.watchers,
             value.forks,
-            valuesArr[1], //repos/user/reposName/subscribers
+            'lang', //repos/user/reposName/subscribers
             'DOWNLOADS', //DEPRECATED--
-            valuesArr[2], //repos/user/reposName/pulls
-            valuesArr[3], //repos/user/reposName/contributors
+            'lang', //repos/user/reposName/pulls
+            'lang', //repos/user/reposName/contributors
             'COLLABS', //REQUIRES AUTH--
-            valuesArr[4], //repos/user/reposName/commits
+            'lang', //repos/user/reposName/commits
             //Added
-            valuesArr[5], //repos/user/reposName/contributors
-            valuesArr[6], //repos/user/reposName/labels
-            valuesArr[7] //repos/user/reposName/deployments
+            'lang', //repos/user/reposName/contributors
+            'lang', //repos/user/reposName/labels
+            'lang' //repos/user/reposName/deployments
           ];
-        file.appendFile("/home/routar/Desktop/ADAD/ADAD-FEUP/dataset.csv", '\n' + data, function(err) {
+        file.appendFile("/home/routar/FEUP/ADAD/ADAD-FEUP/dataset.csv", '\n' + data, function(err) {
             if(err) {
                 return console.log(err);
             }
-        }); 
+        });
     }
 
     pageNumber++;
