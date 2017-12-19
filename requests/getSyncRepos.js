@@ -6,7 +6,7 @@ var userAgent = 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:57.0) Gecko/20100101
 
 var host = 'https://api.github.com',
     searchPath = '/search/repositories?q=size:',
-    minSize = 100001,
+    minSize = 100001;
     maxSize = 100201;
     pagePath = '&page=',
     pageNumber = 1;
@@ -18,7 +18,6 @@ var labelsArr = [
     'pulls', 
     'contributors', 
     'commits', 
-    'contributors', 
     'labels', 
     'deployments'
 ];
@@ -34,7 +33,7 @@ for (var i = 0; i < 1; i++) {
     }
 
     fullPath = host + searchPath + minSize + '..' + maxSize + pagePath + pageNumber;
-    console.log('search path = ' + fullPath);
+    //console.log('search path = ' + fullPath);
     var res = request('GET', fullPath, {
         'headers': {
             'user-agent': userAgent
@@ -60,7 +59,6 @@ for (var i = 0; i < 1; i++) {
             else valuesArr.push(subresults);
         }
         
-
         var data = [
             value.id,
             value.name,

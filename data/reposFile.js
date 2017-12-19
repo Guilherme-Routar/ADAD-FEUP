@@ -16,14 +16,13 @@ var fields = [
     'n_downloads',
     'n_pulls',
     'n_contributors',
-    'n_collaborators',
     'n_commits',
     'n_releases', 
     'n_labels', 
     'n_deployments' 
 ];
 
-fs.writeFile("/home/routar/FEUP/ADAD/ADAD-FEUP/dataset.csv", fields, function(err) {
+fs.writeFile("/home/routar/FEUP/ADAD/ADAD-FEUP/data/reposData.csv", fields, function(err) {
     if(err) {
         return console.log(err);
     }
