@@ -16,8 +16,6 @@ var host = 'https://api.github.com',
 var fullPath = '';
 
 var labelsArr = [
-    'languages', 
-    'pulls', 
     'contributors', 
     'commits'
 ];
@@ -30,7 +28,9 @@ var tempArr = [];
 var reqCounter = 0;
 
 // 30 repositories per loop
-for (var i = 0; i < 1; i++) {
+// # of requests: (1 + 30*2)*340 = 20740 requests = 4,148 hours
+// Started at 18h48
+for (var i = 0; i < 340; i++) {
 
     if (pageNumber == 11) {
         pageNumber = 1;
@@ -49,7 +49,6 @@ for (var i = 0; i < 1; i++) {
     });
     
     sleep.sleep(2);
-
     var results = (JSON.parse(res.getBody())).items;
     for (var j = 0; j < results.length; j++) {
         var value = results[j];
