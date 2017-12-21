@@ -7,19 +7,13 @@ var fields = [
     'size',
     'created_at',
     'main_language',
-    'n_languages',
     'n_issues',
     'n_stargazers',
     'n_watchers',
     'n_forks',
-    'n_subscribers',
-    'n_downloads',
-    'n_pulls',
+    //Extra requests
     'n_contributors',
     'n_commits',
-    'n_releases', 
-    'n_labels', 
-    'n_deployments' 
 ];
 
 fs.writeFile("/home/routar/FEUP/ADAD/ADAD-FEUP/data/reposData.csv", fields, function(err) {
