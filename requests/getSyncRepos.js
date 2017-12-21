@@ -1,8 +1,11 @@
 var sleep = require('sleep');
 var request = require('sync-request');
-var file = require('./file.js');
+var file = require('fs');
 
 var userAgent = 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:57.0) Gecko/20100101 Firefox/57.0';
+
+var clientID = '6e525a2f12669a78b6de';
+var clientSecret = 'fd5f0eb647f15065d197ad9c36ed7d989660dac0';
 
 var host = 'https://api.github.com',
     searchPath = '/search/repositories?q=size:',
@@ -14,14 +17,17 @@ var fullPath = '';
 
 var labelsArr = [
     'languages', 
-    'subscribers', 
     'pulls', 
     'contributors', 
-    'commits', 
-    'labels', 
-    'deployments'
+    'commits'
 ];
 var valuesArr = [];
+
+
+var firstParseArr = [];
+var tempArr = [];
+
+var reqCounter = 0;
 
 // 30 repositories per loop
 for (var i = 0; i < 1; i++) {
@@ -32,31 +38,33 @@ for (var i = 0; i < 1; i++) {
         maxSize += 200;
     }
 
-    fullPath = host + searchPath + minSize + '..' + maxSize + pagePath + pageNumber;
-    //console.log('search path = ' + fullPath);
+    sleep.sleep(2);
+    fullPath = host + searchPath + minSize + '..' + maxSize + pagePath + pageNumber + 'client_id=' + clientID + '&client_secret=' + clientSecret;
+    reqCounter++;
+    console.log('Request #' + reqCounter + ', path - ' + fullPath);
     var res = request('GET', fullPath, {
         'headers': {
             'user-agent': userAgent
         }
     });
+    
+    sleep.sleep(2);
 
     var results = (JSON.parse(res.getBody())).items;
     for (var j = 0; j < results.length; j++) {
         var value = results[j];
-
         
         var subPath = host + '/repos/' + value.full_name + '/';
         for (var label = 0; label < labelsArr.length; label++) {
-            //console.log('sub path = ' + subPath + labelsArr[label]);
-            sleep.sleep(8);
-            var subRes = request('GET', subPath + labelsArr[label], {
+            sleep.sleep(3);
+            reqCounter++;
+            console.log('Request #' + reqCounter + ', subpath - ' + subPath + labelsArr[label]);
+            var subRes = request('GET', subPath + labelsArr[label] + '?client_id=' + clientID + '&client_secret=' + clientSecret, {
                 'headers': {
                     'user-agent': userAgent
                 }
             });
-            var subresults =  (JSON.parse(subRes.getBody()));
-            if (label == 0) valuesArr.push(Object.keys(subRes).length); //getting number of languages
-            else valuesArr.push(subresults);
+            valuesArr.push(Object.keys(JSON.parse(subRes.getBody())).length);
         }
         
         var data = [
@@ -66,23 +74,15 @@ for (var i = 0; i < 1; i++) {
             value.size,
             value.created_at,
             value.language,
-            'lang', //repos/user/reposName/languages
             value.open_issues,
             value.stargazers_count,
             value.watchers,
             value.forks,
-            'lang', //repos/user/reposName/subscribers
-            'DOWNLOADS', //DEPRECATED--
-            'lang', //repos/user/reposName/pulls
-            'lang', //repos/user/reposName/contributors
-            'COLLABS', //REQUIRES AUTH--
-            'lang', //repos/user/reposName/commits
-            //Added
-            'lang', //repos/user/reposName/contributors
-            'lang', //repos/user/reposName/labels
-            'lang' //repos/user/reposName/deployments
+            valuesArr[0], //repos/user/reposName/contributors
+            valuesArr[1], //repos/user/reposName/commits
           ];
-        file.appendFile("/home/routar/FEUP/ADAD/ADAD-FEUP/dataset.csv", '\n' + data, function(err) {
+
+        file.appendFile("/home/routar/FEUP/ADAD/ADAD-FEUP/data/reposData.csv", '\n' + data, function(err) {
             if(err) {
                 return console.log(err);
             }
