@@ -2,11 +2,14 @@ var fs = require('fs');
 
 var fields = [
     'id', 
+    'repos_id',
     'owner',
     'created_at',
-    'n_languages',
-    'n_commits',
-    'n_contributors'
+    'n_forks',
+    'n_stargazers',
+    'n_watchers',
+    'size',
+    'n_issues'
 ];
 
 fs.writeFile("/home/routar/FEUP/ADAD/ADAD-FEUP/data/forksData.csv", fields, function(err) {

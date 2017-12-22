@@ -3,6 +3,7 @@ var fs = require('fs');
 var fields = [
     'id',
     'name',
+    'owner',
     'full_name',
     'size',
     'created_at',

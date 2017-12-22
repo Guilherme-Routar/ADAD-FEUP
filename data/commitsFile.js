@@ -7,7 +7,8 @@ var fields = [
     'author',
     'date',
     'additions',
-    'deletions'
+    'deletions',
+    'total'
 ];
 
 fs.writeFile("/home/routar/FEUP/ADAD/ADAD-FEUP/data/commitsData.csv", fields, function(err) {
