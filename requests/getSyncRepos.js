@@ -29,7 +29,7 @@ var reqCounter = 0;
 
 // 30 repositories per loop
 // # of requests: (1 + 30*2)*340 = 20740 requests = 4,148 hours
-// Started at 18h48
+// Started at 19h30
 for (var i = 0; i < 340; i++) {
 
     if (pageNumber == 11) {
@@ -39,7 +39,7 @@ for (var i = 0; i < 340; i++) {
     }
 
     sleep.sleep(2);
-    fullPath = host + searchPath + minSize + '..' + maxSize + pagePath + pageNumber + 'client_id=' + clientID + '&client_secret=' + clientSecret;
+    fullPath = host + searchPath + minSize + '..' + maxSize + pagePath + pageNumber + '&client_id=' + clientID + '&client_secret=' + clientSecret;
     reqCounter++;
     console.log('Request #' + reqCounter + ', path - ' + fullPath);
     var res = request('GET', fullPath, {
@@ -48,23 +48,28 @@ for (var i = 0; i < 340; i++) {
         }
     });
     
-    sleep.sleep(2);
     var results = (JSON.parse(res.getBody())).items;
     for (var j = 0; j < results.length; j++) {
         var value = results[j];
-        
         var subPath = host + '/repos/' + value.full_name + '/';
-        for (var label = 0; label < labelsArr.length; label++) {
-            sleep.sleep(3);
-            reqCounter++;
-            console.log('Request #' + reqCounter + ', subpath - ' + subPath + labelsArr[label]);
-            var subRes = request('GET', subPath + labelsArr[label] + '?client_id=' + clientID + '&client_secret=' + clientSecret, {
-                'headers': {
-                    'user-agent': userAgent
-                }
-            });
-            valuesArr.push(Object.keys(JSON.parse(subRes.getBody())).length);
-        }
+
+        sleep.sleep(2);
+        reqCounter++;
+        console.log('Request #' + reqCounter + ', path - ' + subPath + 'commits');
+        var commitsRes = request('GET', subPath + 'commits' + '?client_id=' + clientID + '&client_secret=' + clientSecret, {
+            'headers': {
+                'user-agent': userAgent
+            }
+        });
+
+        sleep.sleep(2);
+        reqCounter++;
+        console.log('Request #' + reqCounter + ', path - ' + subPath + 'contributors');
+        var contribRes = request('GET', subPath + 'contributors' + '?client_id=' + clientID + '&client_secret=' + clientSecret, {
+            'headers': {
+                'user-agent': userAgent
+            }
+        });
         
         var data = [
             value.id,
@@ -77,16 +82,11 @@ for (var i = 0; i < 340; i++) {
             value.stargazers_count,
             value.watchers,
             value.forks,
-            valuesArr[0], //repos/user/reposName/contributors
-            valuesArr[1], //repos/user/reposName/commits
+            Object.keys(JSON.parse(commitsRes.getBody())).length, //repos/user/reposName/commits
+            Object.keys(JSON.parse(contribRes.getBody())).length  //repos/user/reposName/contributors
           ];
 
-        file.appendFile("/home/routar/FEUP/ADAD/ADAD-FEUP/data/reposData.csv", '\n' + data, function(err) {
-            if(err) {
-                return console.log(err);
-            }
-        });
+        file.appendFileSync("/home/routar/FEUP/ADAD/ADAD-FEUP/data/reposData.csv", '\n' + data);
     }
-
     pageNumber++;
 }
