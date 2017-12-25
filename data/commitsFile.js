@@ -3,7 +3,6 @@ var fs = require('fs');
 var fields = [
     'id', //sha
     'project_id',
-    'message',
     'author',
     'date',
     'additions',

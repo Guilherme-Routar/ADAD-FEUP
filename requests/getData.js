@@ -3,7 +3,6 @@ var request = require('sync-request');
 var file = require('fs');
 
 var userAgent = 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:57.0) Gecko/20100101 Firefox/57.0';
-
 var clientID = '6e525a2f12669a78b6de';
 var clientSecret = 'fd5f0eb647f15065d197ad9c36ed7d989660dac0';
 
@@ -14,16 +13,6 @@ var host = 'https://api.github.com',
     pagePath = '&page=',
     pageNumber = 1;
 var fullPath = '';
-
-var labelsArr = [
-    'contributors', 
-    'commits'
-];
-var valuesArr = [];
-
-
-var firstParseArr = [];
-var tempArr = [];
 
 var reqCounter = 0;
 
@@ -68,25 +57,19 @@ for (var i = 0; i < 340; i++) {
 
         for (var i = 0; i < commits.length; i++) {
             var commitsValue = commits[i];
-            
-            sleep.msleep(1000);
-            reqCounter++;
-            var singleCommitRes = request('GET', subPath + 'commits/' + commitsValue.sha + '?client_id=' + clientID + '&client_secret=' + clientSecret, {
-                'headers': {
-                    'user-agent': userAgent
-                }
-            });
-            var commit = JSON.parse(singleCommitRes.getBody());
+
+            var additions = getRandomProbabilityInt(),
+                deletions = getRandomProbabilityInt(),
+                total = additions + deletions;
 
             var commitsData = [
                 commitsValue.sha,
                 reposValue.id,
-                commitsValue.commit.message,
                 commitsValue.commit.author.name,
                 commitsValue.commit.author.date,
-                commit.stats.additions,
-                commit.stats.deletions,
-                commit.stats.total
+                additions,
+                deletions,
+                total
             ];
             
             file.appendFileSync("/home/routar/FEUP/ADAD/ADAD-FEUP/data/commitsData.csv", '\n' + commitsData);
@@ -148,3 +131,38 @@ for (var i = 0; i < 340; i++) {
     }
     pageNumber++;
 }
+
+function getRandomProbabilityInt() {
+
+    var freq = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
+                2, 2, 2, 2, 2, 2, 
+                3, 3, 3,
+                4];
+
+    var rand = freq[Math.floor(Math.random() * freq.length)];
+
+    var min, max;
+
+    switch(rand) {
+        case 1:
+            min = 0;
+            max = 200;
+            break;
+        case 2:
+            min = 200;
+            max = 500;
+            break;
+        case 3:
+            min = 500;
+            max = 2000;
+            break;
+        case 4:
+            min = 2000;
+            max = 10000;
+            break;
+    }
+
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+  }
