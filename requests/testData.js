@@ -29,10 +29,10 @@ parser({
             //console.log(matches);
             if (matches == 0) {
                 counter++;
-                //console.log('id = ' + commitsArray[i].project_id);
+                console.log('id = ' + commitsArray[i].project_id);
             }
         }
-        //console.log("counter = " + counter);
+        console.log("counter = " + counter);
     });
 
     /* Testing forks data */
@@ -59,5 +59,4 @@ parser({
         }
         console.log("counter = " + counter);
     });
-
 });
