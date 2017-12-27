@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "csv": "^2.0.0",
+    "csv-to-array": "^1.0.2",
     "express": "^4.16.2",
     "sleep": "^5.1.1",
     "sync-request": "^4.1.0"
