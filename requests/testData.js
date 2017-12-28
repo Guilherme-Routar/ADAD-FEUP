@@ -5,6 +5,9 @@ var commitsMetadata = ["id", "project_id", "author", "date", "additions", "delet
 var reposMetadata = ["id", "name", "owner", "full_name", "size", "created_at", "main_language", "n_issues", "n_stargazers", "n_watchers", "n_forks", "n_contributors", "n_commits"];
 var forksMetadata = ["id", "repos_id", "owner", "created_at", "n_forks", "n_stargazers", "n_watchers", "size", "n_issues"];
 
+/**
+ * Checking if each commit and fork belongs to a repository listed in the file
+ */
 parser({
     file: "/home/routar/FEUP/ADAD/ADAD-FEUP/data/reposData.csv",
     columns: reposMetadata
