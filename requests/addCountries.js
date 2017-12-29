@@ -13,12 +13,12 @@ var forksMetadata = ["id", "repos_id", "owner", "created_at", "n_forks", "n_star
  */
 
 parser({
-    file: "/home/routar/FEUP/ADAD/ADAD-FEUP/data/reposData.csv.txt",
+    file: "/home/routar/FEUP/ADAD/ADAD-FEUP/data/reposData.csv",
     columns: reposMetadata
 }, function (err, reposArray) {
 
     parser({
-        file: "/home/routar/FEUP/ADAD/ADAD-FEUP/data/forksData.csv.txt",
+        file: "/home/routar/FEUP/ADAD/ADAD-FEUP/data/forksData.csv",
         columns: forksMetadata
     }, function (err, forksArray) {
 
