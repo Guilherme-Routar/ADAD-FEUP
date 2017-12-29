@@ -3,7 +3,7 @@
 // Read repos file, add unique users and randomly assign country
 var parser = require("csv-to-array");
 var file = require('fs');
-var commitsMetadata = ["id", "project_id", "author", "date", "additions", "deletions", "total"];
+var commitsMetadata = ["id", "project_id", "author", "created_at", "additions", "deletions", "total"];
 var reposMetadata = ["id", "name", "owner", "full_name", "size", "created_at", "main_language", "n_issues", "n_stargazers", "n_watchers", "n_forks", "n_contributors", "n_commits"];
 var forksMetadata = ["id", "repos_id", "owner", "created_at", "n_forks", "n_stargazers", "n_watchers", "size", "n_issues"];
 
@@ -37,7 +37,7 @@ parser({
     columns: commitsMetadata
 }, function (err, commitsArray) {
     for (var i = 0; i < commitsArray.length; i++) {
-        date = commitsArray[i].date;
+        date = commitsArray[i].created_at;
         if (dates.indexOf(date) == -1) {
             dates.push(date);
             data = [
@@ -77,6 +77,6 @@ function getTimeOfDay(date) {
         return 'night';
     else if (hour >= 00 && hour < 07)
         return 'night';
-    else if (hour >= 08 && hour < 13)
+    else if (hour >= 07 && hour < 13)
         return 'morning';
 }
