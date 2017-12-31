@@ -12,7 +12,7 @@ parser({
     var data = [];
     var cLen = commitsArray.length;
     for (var i = 0; i < cLen; i++) {
-        var owner = (commitsArray[i].author);
+        var owner = (commitsArray[i].author).toLowerCase();
         if (users.indexOf(owner) == -1) {
             data = [owner, getRandomCountry()];
             file.appendFileSync("/home/routar/FEUP/ADAD/ADAD-FEUP/data/authors.csv", '\n' + data);
