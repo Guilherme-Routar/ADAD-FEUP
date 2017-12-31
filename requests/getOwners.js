@@ -1,17 +1,7 @@
-
-
-// Read repos file, add unique users and randomly assign country
-
-
 var parser = require("csv-to-array");
 var file = require('fs');
 var reposMetadata = ["id", "name", "owner", "full_name", "size", "created_at", "main_language", "n_issues", "n_stargazers", "n_watchers", "n_forks", "n_contributors", "n_commits"];
 var forksMetadata = ["id", "repos_id", "owner", "created_at", "n_forks", "n_stargazers", "n_watchers", "size", "n_issues"];
-var commitsMetadata = ["id", "project_id", "author", "created_at", "additions", "deletions", "total"];
-
-/**
- * Checking if each commit and fork belongs to a repository listed in the file
- */
 
 users = [];
 
@@ -23,10 +13,10 @@ parser({
     var data = [];
     var rLen = reposArray.length;
     for (var i = 0; i < rLen; i++) {
-        var owner = (reposArray[i].owner).toLowerCase();
+        var owner = (reposArray[i].owner);
         if (users.indexOf(owner) == -1) {
             data = [owner, getRandomCountry()];
-            file.appendFileSync("/home/routar/FEUP/ADAD/ADAD-FEUP/data/users.csv", '\n' + data);
+            file.appendFileSync("/home/routar/FEUP/ADAD/ADAD-FEUP/data/owners.csv", '\n' + data);
             users.push(owner);
         }
     }
@@ -40,31 +30,13 @@ parser({
     var data = [];
     var fLen = forksArray.length;
     for (var i = 0; i < fLen; i++) {
-        var owner = (forksArray[i].owner).toLowerCase();
+        var owner = (forksArray[i].owner);
         if (users.indexOf(owner) == -1) {
             data = [owner, getRandomCountry()];
-            file.appendFileSync("/home/routar/FEUP/ADAD/ADAD-FEUP/data/users.csv", '\n' + data);
+            file.appendFileSync("/home/routar/FEUP/ADAD/ADAD-FEUP/data/owners.csv", '\n' + data);
             users.push(owner);
         }
     }
-});
-
-parser({
-    file: "/home/routar/FEUP/ADAD/ADAD-FEUP/data/commitsData.csv",
-    columns: commitsMetadata
-}, function (err, commitsArray) {
-
-    var data = [];
-    var cLen = commitsArray.length;
-    for (var i = 0; i < cLen; i++) {
-        var owner = (commitsArray[i].author).toLowerCase();
-        if (users.indexOf(owner) == -1) {
-            data = [owner, getRandomCountry()];
-            file.appendFileSync("/home/routar/FEUP/ADAD/ADAD-FEUP/data/users.csv", '\n' + data);
-            users.push(owner);
-        }
-    }
-
 });
 
 function getRandomCountry() {
