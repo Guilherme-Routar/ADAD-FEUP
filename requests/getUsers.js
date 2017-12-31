@@ -13,22 +13,20 @@ var commitsMetadata = ["id", "project_id", "author", "created_at", "additions", 
  * Checking if each commit and fork belongs to a repository listed in the file
  */
 
-var data = [];
-var rLen = reposArray.length;
-var fLen = forksArray.length;
-var cLen = commitsArray.length;
-var users = [];
+users = [];
 
 parser({
     file: "/home/routar/FEUP/ADAD/ADAD-FEUP/data/reposData.csv",
     columns: reposMetadata
 }, function (err, reposArray) {
 
+    var data = [];
+    var rLen = reposArray.length;
     for (var i = 0; i < rLen; i++) {
         var owner = reposArray[i].owner;
         if (users.indexOf(owner) == -1) {
             data = [owner, getRandomCountry()];
-            file.appendFileSync("/home/routar/FEUP/ADAD/ADAD-FEUP/data/country.csv", '\n' + data);
+            file.appendFileSync("/home/routar/FEUP/ADAD/ADAD-FEUP/data/users.csv", '\n' + data);
             users.push(owner);
         }
     }
@@ -39,11 +37,13 @@ parser({
     columns: forksMetadata
 }, function (err, forksArray) {
 
+    var data = [];
+    var fLen = forksArray.length;
     for (var i = 0; i < fLen; i++) {
         var owner = forksArray[i].owner;
         if (users.indexOf(owner) == -1) {
             data = [owner, getRandomCountry()];
-            file.appendFileSync("/home/routar/FEUP/ADAD/ADAD-FEUP/data/country.csv", '\n' + data);
+            file.appendFileSync("/home/routar/FEUP/ADAD/ADAD-FEUP/data/users.csv", '\n' + data);
             users.push(owner);
         }
     }
@@ -54,11 +54,13 @@ parser({
     columns: commitsMetadata
 }, function (err, commitsArray) {
 
+    var data = [];
+    var cLen = commitsArray.length;
     for (var i = 0; i < cLen; i++) {
         var owner = commitsArray[i].author;
         if (users.indexOf(owner) == -1) {
             data = [owner, getRandomCountry()];
-            file.appendFileSync("/home/routar/FEUP/ADAD/ADAD-FEUP/data/country.csv", '\n' + data);
+            file.appendFileSync("/home/routar/FEUP/ADAD/ADAD-FEUP/data/users.csv", '\n' + data);
             users.push(owner);
         }
     }
