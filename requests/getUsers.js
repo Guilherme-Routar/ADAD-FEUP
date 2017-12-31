@@ -23,7 +23,7 @@ parser({
     var data = [];
     var rLen = reposArray.length;
     for (var i = 0; i < rLen; i++) {
-        var owner = reposArray[i].owner;
+        var owner = (reposArray[i].owner).toLowerCase();
         if (users.indexOf(owner) == -1) {
             data = [owner, getRandomCountry()];
             file.appendFileSync("/home/routar/FEUP/ADAD/ADAD-FEUP/data/users.csv", '\n' + data);
@@ -40,7 +40,7 @@ parser({
     var data = [];
     var fLen = forksArray.length;
     for (var i = 0; i < fLen; i++) {
-        var owner = forksArray[i].owner;
+        var owner = (forksArray[i].owner).toLowerCase();
         if (users.indexOf(owner) == -1) {
             data = [owner, getRandomCountry()];
             file.appendFileSync("/home/routar/FEUP/ADAD/ADAD-FEUP/data/users.csv", '\n' + data);
@@ -57,7 +57,7 @@ parser({
     var data = [];
     var cLen = commitsArray.length;
     for (var i = 0; i < cLen; i++) {
-        var owner = commitsArray[i].author;
+        var owner = (commitsArray[i].author).toLowerCase();
         if (users.indexOf(owner) == -1) {
             data = [owner, getRandomCountry()];
             file.appendFileSync("/home/routar/FEUP/ADAD/ADAD-FEUP/data/users.csv", '\n' + data);
