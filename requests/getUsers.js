@@ -42,6 +42,7 @@ parser({
                     file.appendFileSync("/home/routar/FEUP/ADAD/ADAD-FEUP/data/country.csv", '\n' + data);
                     users.push(owner);
                     inc++;
+                    console.log('Adding ' + data);
                 }
             }
 
