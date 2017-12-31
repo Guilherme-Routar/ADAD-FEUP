@@ -13,61 +13,56 @@ var commitsMetadata = ["id", "project_id", "author", "created_at", "additions", 
  * Checking if each commit and fork belongs to a repository listed in the file
  */
 
+var data = [];
+var rLen = reposArray.length;
+var fLen = forksArray.length;
+var cLen = commitsArray.length;
+var users = [];
+
 parser({
     file: "/home/routar/FEUP/ADAD/ADAD-FEUP/data/reposData.csv",
     columns: reposMetadata
 }, function (err, reposArray) {
 
-    parser({
-        file: "/home/routar/FEUP/ADAD/ADAD-FEUP/data/forksData.csv",
-        columns: forksMetadata
-    }, function (err, forksArray) {
+    for (var i = 0; i < rLen; i++) {
+        var owner = reposArray[i].owner;
+        if (users.indexOf(owner) == -1) {
+            data = [owner, getRandomCountry()];
+            file.appendFileSync("/home/routar/FEUP/ADAD/ADAD-FEUP/data/country.csv", '\n' + data);
+            users.push(owner);
+        }
+    }
+});
 
-        parser({
-            file: "/home/routar/FEUP/ADAD/ADAD-FEUP/data/commitsData.csv",
-            columns: commitsMetadata
-        }, function (err, commitsArray) {
+parser({
+    file: "/home/routar/FEUP/ADAD/ADAD-FEUP/data/forksData.csv",
+    columns: forksMetadata
+}, function (err, forksArray) {
 
-            var data = [];
-            var inc = 1;
-            var rLen = reposArray.length;
-            var fLen = forksArray.length;
-            var cLen = commitsArray.length;
-            var users = [];
+    for (var i = 0; i < fLen; i++) {
+        var owner = forksArray[i].owner;
+        if (users.indexOf(owner) == -1) {
+            data = [owner, getRandomCountry()];
+            file.appendFileSync("/home/routar/FEUP/ADAD/ADAD-FEUP/data/country.csv", '\n' + data);
+            users.push(owner);
+        }
+    }
+});
 
-            for (var i = 0; i < rLen; i++) {
-                var owner = reposArray[i].owner;
-                if (users.indexOf(owner) == -1) {
-                    data = [inc, owner, getRandomCountry()];
-                    file.appendFileSync("/home/routar/FEUP/ADAD/ADAD-FEUP/data/country.csv", '\n' + data);
-                    users.push(owner);
-                    inc++;
-                    console.log('Adding ' + data);
-                }
-            }
+parser({
+    file: "/home/routar/FEUP/ADAD/ADAD-FEUP/data/commitsData.csv",
+    columns: commitsMetadata
+}, function (err, commitsArray) {
 
-            for (var i = 0; i < fLen; i++) {
-                var owner = forksArray[i].owner;
-                if (users.indexOf(owner) == -1) {
-                    data = [inc, owner, getRandomCountry()];
-                    file.appendFileSync("/home/routar/FEUP/ADAD/ADAD-FEUP/data/country.csv", '\n' + data);
-                    users.push(owner);
-                    inc++;
-                }
-            }
+    for (var i = 0; i < cLen; i++) {
+        var owner = commitsArray[i].author;
+        if (users.indexOf(owner) == -1) {
+            data = [owner, getRandomCountry()];
+            file.appendFileSync("/home/routar/FEUP/ADAD/ADAD-FEUP/data/country.csv", '\n' + data);
+            users.push(owner);
+        }
+    }
 
-            for (var i = 0; i < cLen; i++) {
-                var owner = commitsArray[i].author;
-                if (users.indexOf(owner) == -1) {
-                    data = [inc, owner, getRandomCountry()];
-                    file.appendFileSync("/home/routar/FEUP/ADAD/ADAD-FEUP/data/country.csv", '\n' + data);
-                    users.push(owner);
-                    inc++;
-                }
-            }
-
-        });
-    });
 });
 
 function getRandomCountry() {
