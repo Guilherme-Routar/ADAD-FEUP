@@ -51,7 +51,7 @@ function randomName(name) {
 
         return randomstring.generate({
             length: rand,
-            charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_/1234567890 '
+            charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_/1234567890'
         });
     }
     else
