@@ -12,7 +12,7 @@ parser({
     console.log(commitsArray.length);
     for (var i = 0; i < commitsArray.length; i++) {
         var data = [];
-        var author = commitsArray[i].authorID;
+        var author = (commitsArray[i].authorID).toLowerCase();
         if (authorsArr.indexOf(author) == -1) {
             authorsArr.push(author);
             data = [
